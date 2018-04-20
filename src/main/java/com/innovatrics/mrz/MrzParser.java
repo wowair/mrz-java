@@ -1,17 +1,17 @@
 /**
  * Java parser for the MRZ records, as specified by the ICAO organization.
  * Copyright (C) 2011 Innovatrics s.r.o.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -21,8 +21,6 @@ package com.innovatrics.mrz;
 import com.innovatrics.mrz.types.MrzDate;
 import com.innovatrics.mrz.types.MrzFormat;
 import com.innovatrics.mrz.types.MrzSex;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.Normalizer;
 import java.util.HashMap;
@@ -166,8 +164,6 @@ public class MrzParser {
         return invalidCheckdigit==null;
     }
 
-    private static Logger log = LoggerFactory.getLogger(MrzParser.class);
-
     /**
      * Parses MRZ date.
      * @param range the range containing the date, in the YYMMDD format. The range must be 6 characters long.
@@ -185,10 +181,8 @@ public class MrzParser {
             year = Integer.parseInt(rawValue(r));
         } catch (NumberFormatException ex) {
             year = -1;
-            log.debug("Failed to parse MRZ date year " + rawValue(range) + ": " + ex, mrz, r);
         }
         if (year < 0 || year > 99) {
-            log.debug("Invalid year value " + year + ": must be 0..99");
         }
         r = new MrzRange(range.column + 2, range.column + 4, range.row);
         int month;
@@ -196,10 +190,6 @@ public class MrzParser {
             month = Integer.parseInt(rawValue(r));
         } catch (NumberFormatException ex) {
             month = -1;
-            log.debug("Failed to parse MRZ date month " + rawValue(range) + ": " + ex, mrz, r);
-        }
-        if (month < 1 || month > 12) {
-            log.debug("Invalid month value " + month + ": must be 1..12");
         }
         r = new MrzRange(range.column + 4, range.column + 6, range.row);
         int day;
@@ -207,11 +197,8 @@ public class MrzParser {
             day = Integer.parseInt(rawValue(r));
         } catch (NumberFormatException ex) {
             day = -1;
-            log.debug("Failed to parse MRZ date month " + rawValue(range) + ": " + ex, mrz, r);
         }
-        if (day < 1 || day > 31) {
-            log.debug("Invalid day value " + day + ": must be 1..31");
-        }
+
         return new MrzDate(year, month, day, rawValue(range));
 
     }
